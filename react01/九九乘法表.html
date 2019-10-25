@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>九九乘法表</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+    <style>
+        td{
+            border:1px solid orange;
+        }
+        .select{
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script type="text/babel">
+        var Count = React.createClass({
+            getInitialState(){
+                return{
+                    sel:0,
+                    num:[
+                        [1],
+                        [1,2],
+                        [1,2,3],
+                        [1,2,3,4],
+                        [1,2,3,4,5],
+                        [1,2,3,4,5,6],
+                        [1,2,3,4,5,6,7],
+                        [1,2,3,4,5,6,7,8],
+                        [1,2,3,4,5,6,7,8,9],
+                    ]
+                }
+            },
+            renderTd(tds,line){
+                return tds.map((item)=>{
+                    return (
+                        <td>{line+1}*{item}={(line+1)*item}</td>
+                    )
+                })
+            },
+            mouseOver(index){
+                console.log('划过',index)
+                this.setState({sel:index})
+            },
+            render(){
+                return(
+                    <div>
+                        {this.state.num.map((item,index) =>{
+                            return(
+                                <tr className={this.state.sel===index?'select':''}
+                                    onMouseOver={this.mouseOver.bind(this,index)}
+                                    style={{background:index%2?'blue':'pink'}}>
+                                    {this.renderTd(item,index)}
+                                </tr>
+                            )
+                        })}
+                    </div>
+
+                )
+            }
+        })
+        ReactDOM.render(<Count/>,app)
+    </script>
+</body>
+</html>

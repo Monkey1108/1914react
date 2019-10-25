@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>recat-todolist</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script type='text/babel'>
+        let ReactTodolist = React.createClass({           
+            getInitialState(){
+                return{
+                    list:[
+                        {todo:'啥都',finish:false},
+                        {todo:'啥都',finish:false},
+                        {todo:'啥都',finish:false},
+                    ]
+                }
+            },  
+            addList(todo){
+                let list = this.state.list
+                list.push({todo:todo,finish:false})
+                this.setState({list:list})
+            }, 
+            toggleList(){
+                let list = this.state.list
+
+            }, 
+            delList(index){
+                let list = this.state.list
+                list.splice(index,1)
+                this.setState({list:list})
+            },  
+            updateList(index){
+                let list = this.state.list
+                list[index].finish=true
+                this.setState({list:list})
+            }, 
+            render(){
+                return(
+                    <div>
+                        <Add add={this.addList}></Add>
+                        <Nav toggle={this.toggleList}></Nav>
+                        <List list={this.state.list}
+                              del={this.delList}
+                              update={this.updateList}></List>
+                    </div>
+                )
+            }
+        })
+        let Add = React.createClass({
+            render(){
+                return(
+                    <div>
+                        <input type='text' placeholder='添加todo' ref='input' />
+                        <button onClick={()=>{
+                            this.props.add(this.refs.input.value)
+                        }}>添加</button>
+                    </div>
+                )
+            }
+        })
+        let Nav = React.createClass({
+            render(){
+                return(
+                    <div>
+                        <button onClick={()=> {
+                            this.props.toggle(0)
+                        }}>全部</button>
+                        <button>已完成</button>
+                        <button>未完成</button>
+                    </div>
+                )
+            }
+        })
+        let List = React.createClass({
+            render(){
+                return(
+                    <div>
+                        <ul>
+                            {this.props.list.map((item,index)=>{
+                                return(
+                                    <li>
+                                        {item.todo}
+                                        <button onClick={()=>{
+                                            this.props.del(index)
+                                        }}>删除</button>
+                                        {item.finish?'已完成':<button onClick={()=>{
+                                            this.props.update(index)
+                                        }}>待完成</button>}
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<ReactTodolist/>,document.getElementById('app'))
+    </script>       
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>选项卡</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+</head>
+<body>
+    <div id="app">
+
+    </div>
+
+    <script type="text/babel">
+        var Component = React.createClass({
+            getInitialState(){
+                return{
+                    selIndex:0,
+                }
+            },
+            changeSel(index){
+                this.setState({selIndex:index})
+            },
+            render(){
+                return(
+                    <div>
+                        <Tab sel={this.state.selIndex}
+                             changeSel={this.changeSel}>
+                        </Tab>
+                        <List sel={this.state.selIndex}></List>
+                    </div>
+                )
+            }
+        })
+        // 列表
+        var List = React.createClass({
+            // 在组件接收到一个新的 prop (更新后)时被调用。这个方法在初始化render时不会被调用
+            componentWillReceiveProps(props){
+                console.log(this.props.selIndex)
+                console.log(props.selIndex)
+                if(props.selIndex===this.props.selIndex) return false
+                this.getList(props.selIndex)
+            },
+            getInitialState(){
+                return{
+                    list:[]
+                }
+            },
+            // 在第一次渲染后调用，只在客户端
+            componentDidMount(){
+                this.getList(2)
+            },
+            getList(index){
+                console.log('请求数据')
+                setTimeout(()=>{
+                    let data = [['斜挎包','双肩包','手提包'],['耳钉','项链','戒指'],['师父','白敬亭','乔振宇']]
+                    this.setState({list:data[index]})
+                },100)
+            },
+            render(){
+                return(
+                    <div>
+                        <ul>
+                            {this.state.list.map((item,index)=>{
+                                return(
+                                    <li key={index}>{item}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            }
+        })
+        // 选项卡
+        var Tab = React.createClass({
+            render(){
+                return(
+                    <div className='tab'>
+                        <ul>
+                            <li className={this.props.selIndex==0?'sel':''}
+                                onClick={()=>{
+                                    this.props.changeSel(0)
+                                }}>包包</li>
+                            <li className={this.props.selIndex==1?'sel':''}
+                                onClick={()=>{
+                                    this.props.changeSel(1)
+                                }}>首饰</li>
+                            <li className={this.props.selIndex==2?'sel':''}
+                                onClick={()=>{
+                                    this.props.changeSel(2)
+                                }}>爱豆</li>
+                        </ul>
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<Component/>,app)
+    </script>
+</body>
+</html>

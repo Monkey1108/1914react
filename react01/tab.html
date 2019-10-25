@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简单选项卡</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script type='text/babel'>
+        var TabControl =React.createClass({
+            getInitialState(){
+                return{
+                    list:['口红','师父','衣服'],
+                    sel:0
+                }
+            },
+            renderTab(data){
+                if(data.length===0) return '暂无数据'
+                return(
+                    <ul>
+                        {data.map((item,index)=>{
+                            return(
+                                <li className={this.state.el===index?'sel':''}
+                                    onClick={()=>{
+                                        this.setState({sel:index})
+                                    }}>{item}</li>
+                            )
+                        })}
+                    </ul>
+                )
+            },
+            render(){
+                let {list} =this.state
+                return(
+                    <div>
+                        {this.renderTab(list)}
+                        <hr/>
+                       {this.state.list.map((item,index)=>{
+                        return (
+                            <div style={{display:this.state.sel===index?'block':'none'}}>{item}</div>
+                        )
+                       })} 
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<TabControl/>,document.getElementById('app'))
+    </script>
+</body>
+</html>

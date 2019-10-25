@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子通信props</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script type='text/babel'>
+        var Father = React.createClass({
+            getDefaultProps(){
+                return{
+                    like:'白敬亭'
+                }
+            },
+            render() { 
+                return(
+                    <div>
+                        <h4>父组件</h4>
+                        <hr/>
+                        <button onClick={()=>{
+                            this.setState({like:'师父'})
+                        }}>change</button>
+                        <Son like={this.state.like}></Son>
+                    </div>
+                )
+            }
+        })
+        var Son = React.createClass({
+            render(){
+                return(
+                    <div>
+                        <h4>子组件</h4>
+                        {this.props.like}
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<Father/>,document.getElementById('app'))
+    </script>
+</body>
+</html>
