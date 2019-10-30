@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>滚动变色</title>
+    <script src="../base/react.min.js"></script>
+    <!-- 提供react对象 -->
+    <script src='../base/react-dom.min.js'></script>
+    <!-- ReactDOM 对象 -->
+    <script src='../base/browser.min.js'></script>
+    <!-- 帮助浏览器解析jsx 语法 -->
+    <style>
+        .wrap{
+            height:3000px;
+        }
+        .color{
+            width:100px;
+            height:100px;
+            /* background:pink; */
+            position:fixed;
+            top:20px;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        
+    </div>
+
+    <script type='text/babel'>
+        var Component = React.createClass({
+            // getInitiailState(){
+            //     return{
+                    
+            //     }
+            // }
+            render(){
+                return(
+                    <div>
+                        <Son></Son>
+                    </div>
+                )
+            }
+        })
+        var Son = React.createClass({
+            getInitialState(){
+                return{
+                    bg:'rgba(255,0,0,.5)'
+                }
+            },
+            componentDidMount(){
+                window.addEventListener('scroll',this.scroll)
+            },
+            scroll(){
+                let r = parseInt(Math.random()*255)
+                let g = parseInt(Math.random()*255)
+                let b = parseInt(Math.random()*255)
+                let a = Math.random()
+                this.setState({bg:`rgba(${r},${g},${b},${a})`})
+                console.log('鼠标滑动')
+            },
+            render(){
+                return(
+                    <div>
+                        <div className='color' style={{background:this.state.bg}}></div>
+                        <div className='wrap'></div>
+                    </div>
+                )
+            }
+        })
+        ReactDOM.render(<Component/>,document.getElementById('app'))
+    </script>
+</body>
+</html>
